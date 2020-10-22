@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:password_safe/models/name_password.dart';
+import 'package:password_safe/database/db_helper.dart';
+import 'package:password_safe/models/SafeCard.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  var dbHelper = DbHelper();
+  List<SafeCard> safeCards;
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: listExample.length,
+      itemCount: safeCards.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.only(top: 8),
@@ -13,13 +22,13 @@ class Body extends StatelessWidget {
             margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
             child: ListTile(
               title: Text(
-                "Name:  ${listExample[index].name}",
+                "Name:  ${safeCards[index].name}",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               subtitle: Text(
-                "Password:  ${listExample[index].password}",
+                "Password:  ${safeCards[index].password}",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
