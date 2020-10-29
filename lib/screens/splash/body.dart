@@ -9,7 +9,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   var dbHelper = DbHelper();
-  List<SafeCard> safeCards;
+  List<SafeCard> safeCards = [];
 
   @override
   Widget build(BuildContext context) {
