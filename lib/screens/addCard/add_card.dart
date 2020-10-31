@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:password_safe/screens/addCard/body.dart';
 
 class AddCardScreen extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
       appBar: AppBar(
         title: Text("Şifre ekle"),
       ),
+      body: Body(),
     );
   }
 }
