@@ -34,7 +34,6 @@ class DbHelper {
 
   Future<int> insert(SafeCard safeCard) async{
     Database db = await this.db;
-    print(safeCard.description);
     var result = await db.insert("safeCards", safeCard.toMap());
   }
 

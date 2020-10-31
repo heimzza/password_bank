@@ -9,12 +9,18 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   var dbHelper = DbHelper();
-  List<SafeCard> safeCards = [];
+  List<SafeCard> safeCards;
+  int cardCount = 0;
+
+  @override
+  void initState() {
+    getCards();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: safeCards.length,
+      itemCount: cardCount,
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.only(top: 8),
@@ -38,5 +44,15 @@ class _BodyState extends State<Body> {
         );
       },
     );
+  }
+
+  void getCards() async {
+    var cardsFuture = dbHelper.getSafeCards();
+    cardsFuture.then((data) {
+      setState(() {
+        this.safeCards = data;
+        cardCount = data.length;
+      });
+    });
   }
 }
