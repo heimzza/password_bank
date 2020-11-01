@@ -5,7 +5,14 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
-  Database _db;
+  static final DbHelper _singleton = DbHelper._internal();
+  static Database _db;
+
+  factory DbHelper() {
+    return _singleton;
+  }
+
+  DbHelper._internal();
 
   Future<Database> get db async {
     if (_db == null) {
@@ -21,7 +28,8 @@ class DbHelper {
   }
 
   void createDb(Database db, int version) async {
-    await db.execute("Create table safeCards(id integer primary key autoincrement, name text, description text, password text)");
+    await db.execute(
+        "Create table safeCards(id integer primary key autoincrement, name text, description text, password text)");
   }
 
   Future<List<SafeCard>> getSafeCards() async {
@@ -32,21 +40,22 @@ class DbHelper {
     });
   }
 
-  Future<int> insert(SafeCard safeCard) async{
+  Future<int> insert(SafeCard safeCard) async {
     Database db = await this.db;
     var result = await db.insert("safeCards", safeCard.toMap());
+    return result;
   }
 
-  Future<int> delete(int id) async{
+  Future<int> delete(int id) async {
     Database db = await this.db;
     var result = await db.rawDelete("delete from safeCards where id= $id");
     return result;
   }
 
-  Future<int> update(SafeCard safeCard) async{
+  Future<int> update(SafeCard safeCard) async {
     Database db = await this.db;
-    var result = await db.update("safeCards", safeCard.toMap(), where: "id=?",whereArgs: [safeCard.id]);
+    var result = await db.update("safeCards", safeCard.toMap(),
+        where: "id=?", whereArgs: [safeCard.id]);
     return result;
   }
-
 }

@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:password_safe/screens/addCard/add_card.dart';
 import 'package:password_safe/screens/splash/body.dart';
 
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
+class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
     if (result != null) {
-      if (result) {
-      }
-      
+      if (result) {}
     }
   }
 }

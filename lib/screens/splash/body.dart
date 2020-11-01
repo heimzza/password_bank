@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:password_safe/database/db_helper.dart';
+import 'package:password_safe/data/db_helper.dart';
 import 'package:password_safe/models/SafeCard.dart';
 
 class Body extends StatefulWidget {
@@ -8,6 +8,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  
   var dbHelper = DbHelper();
   List<SafeCard> safeCards;
   int cardCount = 0;
@@ -16,7 +17,6 @@ class _BodyState extends State<Body> {
   void initState() {
     getCards();
   }
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -55,4 +55,5 @@ class _BodyState extends State<Body> {
       });
     });
   }
+
 }

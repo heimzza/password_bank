@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:password_safe/database/db_helper.dart';
+import 'package:password_safe/data/db_helper.dart';
 import 'package:password_safe/models/SafeCard.dart';
 
 class Body extends StatefulWidget {
