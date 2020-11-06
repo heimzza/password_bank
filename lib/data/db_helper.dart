@@ -5,14 +5,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
-  static final DbHelper _singleton = DbHelper._internal();
-  static Database _db;
-
-  factory DbHelper() {
-    return _singleton;
-  }
-
-  DbHelper._internal();
+  Database _db;
 
   Future<Database> get db async {
     if (_db == null) {

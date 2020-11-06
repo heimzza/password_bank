@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:password_safe/blocs/safe_card_bloc.dart';
+import 'package:password_safe/data/db_helper.dart';
 import 'package:password_safe/models/SafeCard.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  
+  var dbHelper = DbHelper();
+  List<SafeCard> safeCards;
+  int cardCount = 0;
+
+  @override
+  void initState() {
+    getCards();
+  }
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      initialData: safeCardBloc.getCards(),
-      stream: safeCardBloc.getStream,
-      builder: (context, snapshot) {
-        return snapshot.data.length >0
-            ? buildSafeCardListItems(snapshot)
-            : Center(
-                child: Text("Veri yok"),
-              );
-      },
-    );
-  }
-
-  buildSafeCardListItems(AsyncSnapshot snapshot) {
     return ListView.builder(
-      itemCount: snapshot.data.length,
+      itemCount: cardCount,
       itemBuilder: (context, index) {
-        List<SafeCard> safeCards = snapshot.data;
         return Padding(
           padding: EdgeInsets.only(top: 8),
           child: Card(
@@ -46,4 +45,15 @@ class Body extends StatelessWidget {
       },
     );
   }
+
+  void getCards() async {
+    var cardsFuture = dbHelper.getSafeCards();
+    cardsFuture.then((data) {
+      setState(() {
+        this.safeCards = data;
+        cardCount = data.length;
+      });
+    });
+  }
+
 }

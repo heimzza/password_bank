@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:password_safe/blocs/safe_card_bloc.dart';
 import 'package:password_safe/data/db_helper.dart';
 import 'package:password_safe/models/SafeCard.dart';
 
@@ -60,9 +61,7 @@ class _BodyState extends State<Body> {
   }
 
   void addCard() async {
-    print(txtName.text + txtPassword.text);
-    var result = await dbHelper
-        .insert(SafeCard(name: txtName.text, password: txtPassword.text));
-    Navigator.pop(context, true);
+    safeCardBloc.addToSafe(SafeCard(name: txtName.text, password: txtPassword.text));
+    Navigator.pop(context);
   }
 }
