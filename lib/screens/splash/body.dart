@@ -9,15 +9,15 @@ class Body extends StatelessWidget {
       initialData: safeCardBloc.getCards(),
       stream: safeCardBloc.getStream,
       builder: (context, snapshot) {
-        return snapshot.hasError
-            ? Center(
-                child: Text(snapshot.error.toString()),
-              )
-            : snapshot.hasData
-                ? buildTest(snapshot)
-                : Center(
-                    child: Text("Veri yok"),
-                  );
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("No data yet");
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          return Text("Done!");
+        } else if (snapshot.hasError) {
+          return Text("Error!");
+        } else {
+          return Text("Data is here! ${snapshot.data}");
+        }
       },
     );
   }
@@ -26,20 +26,19 @@ class Body extends StatelessWidget {
     return ListView.builder(
       itemCount: snapshot.data.length, // problem
       itemBuilder: (context, index) {
-        List<SafeCard> safeCards = snapshot.data;
         return Padding(
           padding: EdgeInsets.only(top: 8),
           child: Card(
             margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
             child: ListTile(
               title: Text(
-                "Name:  ${safeCards[index].name}",
+                "Name:  ${snapshot.data[index].name}",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               subtitle: Text(
-                "Password:  ${safeCards[index].password}",
+                "Password:  ${snapshot.data[index].password}",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
@@ -52,6 +51,8 @@ class Body extends StatelessWidget {
   }
 
   buildTest(AsyncSnapshot snapshot) {
-    return Center(child: Text("test ${snapshot.data}"),);
+    return Center(
+      child: Text("test ${snapshot.data}"),
+    );
   }
 }

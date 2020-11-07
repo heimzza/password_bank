@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:password_safe/screens/addCard/add_card.dart';
-import 'package:password_safe/screens/splash/body_old.dart';
+import 'package:password_safe/screens/splash/body.dart';
 
 class Splash extends StatelessWidget {
   @override
