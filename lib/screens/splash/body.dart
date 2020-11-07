@@ -9,18 +9,22 @@ class Body extends StatelessWidget {
       initialData: safeCardBloc.getCards(),
       stream: safeCardBloc.getStream,
       builder: (context, snapshot) {
-        return snapshot.data.length >0
-            ? buildSafeCardListItems(snapshot)
-            : Center(
-                child: Text("Veri yok"),
-              );
+        return snapshot.hasError
+            ? Center(
+                child: Text(snapshot.error.toString()),
+              )
+            : snapshot.hasData
+                ? buildTest(snapshot)
+                : Center(
+                    child: Text("Veri yok"),
+                  );
       },
     );
   }
 
   buildSafeCardListItems(AsyncSnapshot snapshot) {
     return ListView.builder(
-      itemCount: snapshot.data.length,
+      itemCount: snapshot.data.length, // problem
       itemBuilder: (context, index) {
         List<SafeCard> safeCards = snapshot.data;
         return Padding(
@@ -45,5 +49,9 @@ class Body extends StatelessWidget {
         );
       },
     );
+  }
+
+  buildTest(AsyncSnapshot snapshot) {
+    return Center(child: Text("test ${snapshot.data}"),);
   }
 }

@@ -7,7 +7,7 @@ class SafeCardBloc {
   final safeCardStreamController = StreamController.broadcast();
 
   Stream get getStream => safeCardStreamController.stream;
-  var dbHelper = DbHelper();
+  final dbHelper = DbHelper();
 
   void addToSafe(SafeCard card) async {
     dbHelper.insert(card);
@@ -15,8 +15,8 @@ class SafeCardBloc {
   }
 
    Future<List<SafeCard>> getCards() async {
-    var cards = await dbHelper.getSafeCards();
-    print(cards);
+    var cards = dbHelper.getSafeCards();
+    //print(cards);
     return cards;
   }
 }
