@@ -2,43 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:password_safe/blocs/safe_card_bloc.dart';
 import 'package:password_safe/models/SafeCard.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  List<SafeCard> safeCards = [];
+  int cardCount = 0;
+
+  @override
+  void initState() {
+    getCards();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      initialData: safeCardBloc.getCards(),
+      initialData: safeCards,
       stream: safeCardBloc.getStream,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("No data yet");
-        } else if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.done) {
           return Text("Done!");
         } else if (snapshot.hasError) {
           return Text("Error!");
         } else {
-          return Text("Data is here! ${snapshot.data}");
+          getCards();
+          return buildSafeCardListItems(safeCards);
         }
       },
     );
   }
 
-  buildSafeCardListItems(AsyncSnapshot snapshot) {
+  buildSafeCardListItems(List<SafeCard> cards) {
     return ListView.builder(
-      itemCount: snapshot.data.length, // problem
+      itemCount: cards.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: EdgeInsets.only(top: 8),
+          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: Card(
             margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
             child: ListTile(
               title: Text(
-                "Name:  ${snapshot.data[index].name}",
+                "Yeri:  ${cards[index].name}",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               subtitle: Text(
-                "Password:  ${snapshot.data[index].password}",
+                "Şifresi:  ${cards[index].password}",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
@@ -50,9 +62,13 @@ class Body extends StatelessWidget {
     );
   }
 
-  buildTest(AsyncSnapshot snapshot) {
-    return Center(
-      child: Text("test ${snapshot.data}"),
-    );
+  void getCards() async {
+    var cardsFuture = safeCardBloc.getCards();
+    cardsFuture.then((data) {
+      setState(() {
+        this.safeCards = data;
+        cardCount = data.length;
+      });
+    });
   }
 }

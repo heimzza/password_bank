@@ -16,9 +16,9 @@ class SafeCardBloc {
 
    Future<List<SafeCard>> getCards() async {
     var cards = await dbHelper.getSafeCards();
-    //print(cards);
     return cards;
   }
+  
 }
 
 final safeCardBloc = SafeCardBloc();
