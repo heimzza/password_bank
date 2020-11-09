@@ -14,12 +14,16 @@ class SafeCardBloc {
     safeCardStreamController.sink.add(dbHelper.getSafeCards());
   }
 
-   Future<List<SafeCard>> getCards() async {
+  Future<List<SafeCard>> getCards() async {
     var cards = await dbHelper.getSafeCards();
     //safeCardStreamController.sink.close();
     return cards;
   }
-  
+
+  void deleteAll() async {
+    dbHelper.deleteAll();
+    safeCardStreamController.sink.add(dbHelper.getSafeCards());
+  }
 }
 
 final safeCardBloc = SafeCardBloc();

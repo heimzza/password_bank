@@ -53,6 +53,12 @@ class DbHelper {
     return result;
   }
 
+  Future<int> deleteAll() async {
+    Database db = await this.db;
+    var result = await db.rawDelete("delete from safeCards");
+    return result;
+  }
+
   Future<int> update(SafeCard safeCard) async {
     Database db = await this.db;
     var result = await db.update("safeCards", safeCard.toMap(),
