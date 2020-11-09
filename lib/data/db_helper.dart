@@ -5,10 +5,9 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
-
   static DbHelper _singleton = DbHelper._internal();
 
-  factory DbHelper(){
+  factory DbHelper() {
     return _singleton;
   }
 

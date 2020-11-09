@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:password_safe/blocs/safe_card_bloc.dart';
+import 'package:password_safe/data/db_helper.dart';
 import 'package:password_safe/models/SafeCard.dart';
 
 class Body extends StatefulWidget {
@@ -10,6 +11,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   List<SafeCard> safeCards = [];
   int cardCount = 0;
+  final dbHelper = DbHelper();
 
   @override
   void initState() {
@@ -26,8 +28,13 @@ class _BodyState extends State<Body> {
           return Text("Done!");
         } else if (snapshot.hasError) {
           return Text("Error!");
-        } else {
+        } else if (snapshot.data is Future<List<SafeCard>>) {
+          print("getcards");
           getCards();
+          safeCardBloc.safeCardStreamController.sink.add(print);
+          return buildSafeCardListItems(safeCards);
+        } else {
+          print("usual");
           return buildSafeCardListItems(safeCards);
         }
       },
@@ -63,7 +70,7 @@ class _BodyState extends State<Body> {
   }
 
   void getCards() async {
-    var cardsFuture = safeCardBloc.getCards();
+    var cardsFuture = dbHelper.getSafeCards();
     cardsFuture.then((data) {
       setState(() {
         this.safeCards = data;
