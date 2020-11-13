@@ -47,19 +47,42 @@ class _BodyState extends State<Body> {
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: Card(
-            margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
-            child: ListTile(
-              title: Text(
-                "Yeri:  ${cards[index].name}",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
+          child: Dismissible(
+            key: Key(safeCards[index].id.toString()),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              decoration: BoxDecoration(
+                color: Color(0xFFFFE6E6),
+                borderRadius: BorderRadius.circular(15),
               ),
-              subtitle: Text(
-                "Şifresi:  ${cards[index].password}",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
+              child: Row(
+                children: [
+                  Spacer(),
+                  Icon(Icons.delete_forever),
+                ],
+              ),
+            ),
+            onDismissed: (direction) {
+              setState(() {
+                safeCardBloc.delete(safeCards[index].id);
+                safeCards.removeAt(index);
+              });
+            },
+            child: Card(
+              margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
+              child: ListTile(
+                title: Text(
+                  "Yeri:  ${cards[index].name}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                subtitle: Text(
+                  "Şifresi:  ${cards[index].password}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),

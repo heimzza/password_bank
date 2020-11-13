@@ -7,22 +7,27 @@ class SafeCardBloc {
   final safeCardStreamController = StreamController.broadcast();
 
   Stream get getStream => safeCardStreamController.stream;
-  final dbHelper = DbHelper();
+  final _dbHelper = DbHelper();
 
   void addToSafe(SafeCard card) async {
-    dbHelper.insert(card);
-    safeCardStreamController.sink.add(dbHelper.getSafeCards());
+    _dbHelper.insert(card);
+    safeCardStreamController.sink.add(_dbHelper.getSafeCards());
   }
 
   Future<List<SafeCard>> getCards() async {
-    var cards = await dbHelper.getSafeCards();
+    var cards = await _dbHelper.getSafeCards();
     //safeCardStreamController.sink.close();
     return cards;
   }
 
   void deleteAll() async {
-    dbHelper.deleteAll();
-    safeCardStreamController.sink.add(dbHelper.getSafeCards());
+    _dbHelper.deleteAll();
+    safeCardStreamController.sink.add(_dbHelper.getSafeCards());
+  }
+
+  void delete(int id) async {
+    _dbHelper.delete(id);
+    safeCardStreamController.sink.add(_dbHelper.getSafeCards());
   }
 }
 
