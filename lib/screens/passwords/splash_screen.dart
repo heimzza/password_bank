@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:password_safe/blocs/safe_card_bloc.dart';
 import 'package:password_safe/screens/addCard/add_card.dart';
-import 'package:password_safe/screens/splash/body.dart';
+import 'package:password_safe/screens/passwords/body.dart';
 
-class Splash extends StatelessWidget {
+class Passwords extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

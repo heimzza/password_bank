@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:password_safe/screens/splash/splash_screen.dart';
+import 'package:password_safe/screens/mySafes/my_safes_screen.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Splash(),
+      home: MySafes(),
     );
   }
 }

@@ -3,6 +3,7 @@ class SafeCard {
   String name;
   String description;
   String password;
+  int safeId;
 
   SafeCard({this.name, this.description, this.password});
 
