@@ -10,7 +10,7 @@ class SafeCardBloc {
   final _dbHelper = DbHelper();
 
   void addToSafe(SafeCard card) async {
-    _dbHelper.insert(card);
+    _dbHelper.insertSafeCard(card);
     safeCardStreamController.sink.add(_dbHelper.getSafeCards());
   }
 
@@ -20,13 +20,13 @@ class SafeCardBloc {
     return cards;
   }
 
-  void deleteAll() async {
-    _dbHelper.deleteAll();
+  void deleteAll(int safeId) async {
+    _dbHelper.deleteAllSafeCard(safeId);
     safeCardStreamController.sink.add(_dbHelper.getSafeCards());
   }
 
   void delete(int id) async {
-    _dbHelper.delete(id);
+    _dbHelper.deleteSafeCard(id);
     safeCardStreamController.sink.add(_dbHelper.getSafeCards());
   }
 }

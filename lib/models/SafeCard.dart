@@ -16,6 +16,9 @@ class SafeCard {
       if(id!=null){
         map["id"]=id;
       }
+      if (safeId!=null) {
+        map['safeId']=safeId;
+      }
       return map;
     }
 
@@ -24,6 +27,7 @@ class SafeCard {
       this.name=o["name"];
       this.description=o["description"];
       this.password=o["password"];
+      this.safeId=int.tryParse(o["safeId"].toString());
     }
 }
 

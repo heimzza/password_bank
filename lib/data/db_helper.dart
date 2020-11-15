@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:password_safe/models/Safe.dart';
 import 'package:password_safe/models/SafeCard.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -30,7 +31,7 @@ class DbHelper {
 
   void createDb(Database db, int version) async {
     await db.execute(
-        "Create table safeCards(id integer primary key autoincrement, name text, description text, password text)");
+        "Create table safeCards(id integer primary key autoincrement, name text, description text, password text);Create table safes(id integer primary key autoincrement, name text, password text)");
   }
 
   Future<List<SafeCard>> getSafeCards() async {
@@ -41,25 +42,46 @@ class DbHelper {
     });
   }
 
-  Future<int> insert(SafeCard safeCard) async {
+  Future<List<Safe>> getSafes() async{
+    Database db = await this.db;
+    var result = await db.query('safes');
+    return List.generate(result.length, (index) {
+      return Safe.fromObject(result[index]);
+    });
+  }
+
+  Future<int> insertSafeCard(SafeCard safeCard) async {
     Database db = await this.db;
     var result = await db.insert("safeCards", safeCard.toMap());
     return result;
   }
 
-  Future<int> delete(int id) async {
+  Future<int> insertSafe(Safe safe) async {
+    Database db = await this.db;
+    var result = await db.insert('safes', safe.toMap());
+    return result;
+  }
+
+  Future<int> deleteSafeCard(int id) async {
     Database db = await this.db;
     var result = await db.rawDelete("delete from safeCards where id= $id");
     return result;
   }
 
-  Future<int> deleteAll() async {
+  Future<int> deleteSafe(int id) async {
     Database db = await this.db;
-    var result = await db.rawDelete("delete from safeCards");
+    var result = await db.rawDelete('delete from safes where id = $id');
+    deleteAllSafeCard(id);
     return result;
   }
 
-  Future<int> update(SafeCard safeCard) async {
+  Future<int> deleteAllSafeCard(int safeId) async {
+    Database db = await this.db;
+    var result = await db.rawDelete("delete from safeCards where safeId = $safeId");
+    return result;
+  }
+
+  Future<int> updateSafeCard(SafeCard safeCard) async {
     Database db = await this.db;
     var result = await db.update("safeCards", safeCard.toMap(),
         where: "id=?", whereArgs: [safeCard.id]);

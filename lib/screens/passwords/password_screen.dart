@@ -4,6 +4,10 @@ import 'package:password_safe/screens/addCard/add_card.dart';
 import 'package:password_safe/screens/passwords/body.dart';
 
 class Passwords extends StatelessWidget {
+  final int safeId;
+
+  Passwords(this.safeId);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +66,7 @@ class Passwords extends StatelessWidget {
         ),
         FlatButton(
           onPressed: () =>
-              {safeCardBloc.deleteAll(), Navigator.of(context).pop()},
+              {safeCardBloc.deleteAll(safeId), Navigator.of(context).pop()},
           child: Text("Evet"),
         ),
       ],
