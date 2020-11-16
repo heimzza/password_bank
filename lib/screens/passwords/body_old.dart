@@ -12,6 +12,7 @@ class _BodyState extends State<Body> {
   var dbHelper = DbHelper();
   List<SafeCard> safeCards;
   int cardCount = 0;
+  final safeId =0;
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class _BodyState extends State<Body> {
   }
 
   void getCards() async {
-    var cardsFuture = dbHelper.getSafeCards();
+    var cardsFuture = dbHelper.getSafeCards(0);
     cardsFuture.then((data) {
       setState(() {
         this.safeCards = data;

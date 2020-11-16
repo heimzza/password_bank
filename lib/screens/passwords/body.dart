@@ -4,6 +4,10 @@ import 'package:password_safe/data/db_helper.dart';
 import 'package:password_safe/models/SafeCard.dart';
 
 class Body extends StatefulWidget {
+  final int safeId;
+
+  Body(this.safeId);
+
   @override
   _BodyState createState() => _BodyState();
 }
@@ -15,7 +19,7 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    getCards();
+    getCards(widget.safeId);
   }
 
   @override
@@ -30,7 +34,7 @@ class _BodyState extends State<Body> {
           return Text("Error!");
         } else if (snapshot.data is Future<List<SafeCard>>) {
           print("getcards");
-          getCards();
+          getCards(widget.safeId);
           safeCardBloc.safeCardStreamController.sink.add(print);
           return buildSafeCardListItems(safeCards);
         } else {
@@ -65,7 +69,7 @@ class _BodyState extends State<Body> {
             ),
             onDismissed: (direction) {
               setState(() {
-                safeCardBloc.delete(safeCards[index].id);
+                safeCardBloc.delete(safeCards[index].id, safeCards[index].safeId);
                 safeCards.removeAt(index);
               });
             },
@@ -92,8 +96,8 @@ class _BodyState extends State<Body> {
     );
   }
 
-  void getCards() async {
-    var cardsFuture = dbHelper.getSafeCards();
+  void getCards(int safeId) async {
+    var cardsFuture = dbHelper.getSafeCards(safeId);
     cardsFuture.then((data) {
       setState(() {
         this.safeCards = data;

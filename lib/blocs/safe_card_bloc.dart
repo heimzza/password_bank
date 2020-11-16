@@ -11,23 +11,23 @@ class SafeCardBloc {
 
   void addToSafe(SafeCard card) async {
     _dbHelper.insertSafeCard(card);
-    safeCardStreamController.sink.add(_dbHelper.getSafeCards());
+    safeCardStreamController.sink.add(_dbHelper.getSafeCards(card.safeId));
   }
 
-  Future<List<SafeCard>> getCards() async {
-    var cards = await _dbHelper.getSafeCards();
+  Future<List<SafeCard>> getCards(int safeId) async {
+    var cards = await _dbHelper.getSafeCards(safeId);
     //safeCardStreamController.sink.close();
     return cards;
   }
 
   void deleteAll(int safeId) async {
     _dbHelper.deleteAllSafeCard(safeId);
-    safeCardStreamController.sink.add(_dbHelper.getSafeCards());
+    safeCardStreamController.sink.add(_dbHelper.getSafeCards(safeId));
   }
 
-  void delete(int id) async {
+  void delete(int id, int safeId) async {
     _dbHelper.deleteSafeCard(id);
-    safeCardStreamController.sink.add(_dbHelper.getSafeCards());
+    safeCardStreamController.sink.add(_dbHelper.getSafeCards(safeId));
   }
 }
 

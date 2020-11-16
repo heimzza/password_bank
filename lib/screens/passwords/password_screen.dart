@@ -14,7 +14,7 @@ class Passwords extends StatelessWidget {
       appBar: AppBar(
         title: Text("Şifrelerim"),
         actions: [
-          buildIconButtonToScreen(context, AddCardScreen(), Icon(Icons.add)),
+          buildIconButtonToScreen(context, AddCardScreen(safeId), Icon(Icons.add)),
           buildIconButtonDelete(
             Icon(
               Icons.delete_sweep,
@@ -24,7 +24,7 @@ class Passwords extends StatelessWidget {
           ),
         ],
       ),
-      body: Body(),
+      body: Body(safeId),
     );
   }
 

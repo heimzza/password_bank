@@ -5,7 +5,7 @@ class SafeCard {
   String password;
   int safeId;
 
-  SafeCard({this.name, this.description, this.password});
+  SafeCard({this.name, this.description, this.password, this.safeId});
 
   Map<String, dynamic> toMap(){
       var map = Map<String,dynamic>();

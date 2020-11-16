@@ -31,12 +31,13 @@ class DbHelper {
 
   void createDb(Database db, int version) async {
     await db.execute(
-        "Create table safeCards(id integer primary key autoincrement, name text, description text, password text);Create table safes(id integer primary key autoincrement, name text, password text)");
+        "Create table safeCards(id integer primary key autoincrement, name text, description text, password text, safeId integer)");
+    await db.execute('Create table safes(id integer primary key autoincrement, name text, password text)');
   }
 
-  Future<List<SafeCard>> getSafeCards() async {
+  Future<List<SafeCard>> getSafeCards(int safeId) async {
     Database db = await this.db;
-    var result = await db.query("safeCards");
+    var result = await db.rawQuery("SELECT * FROM safeCards Where safeId=$safeId");
     return List.generate(result.length, (i) {
       return SafeCard.fromObject(result[i]);
     });

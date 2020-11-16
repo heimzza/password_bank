@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:password_safe/blocs/safe_card_bloc.dart';
+import 'package:password_safe/blocs/safe_bloc.dart';
 import 'package:password_safe/data/db_helper.dart';
-import 'package:password_safe/models/SafeCard.dart';
+import 'package:password_safe/models/Safe.dart';
 
 class Body extends StatefulWidget {
-  final int safeId;
-
-  Body(this.safeId);
-
   @override
   _BodyState createState() => _BodyState();
 }
@@ -38,8 +34,8 @@ class _BodyState extends State<Body> {
   buildNameField() {
     return TextField(
       decoration: InputDecoration(
-        hintText: "Ör. steamKullanıcıAdı",
-        labelText: "Yeri",
+        hintText: "Ör. Banka şifrelerim",
+        labelText: "Kasa adı",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -68,14 +64,14 @@ class _BodyState extends State<Body> {
       ),
       child: Text("Ekle"),
       onPressed: () {
-        addCard(widget.safeId);
+        addSafe();
       },
     );
   }
 
-  void addCard(int safeId) async {
-    safeCardBloc
-        .addToSafe(SafeCard(name: txtName.text, password: txtPassword.text, safeId: safeId));
+  void addSafe() async {
+    safeBloc
+        .addSafe(Safe(name: txtName.text, password: txtPassword.text));
     Navigator.pop(context);
   }
 }
