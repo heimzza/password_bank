@@ -64,7 +64,7 @@ class _BodyState extends State<Body> {
               background: Container(
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 decoration: BoxDecoration(
-                  color: Color(0xFFFFE6E6),
+                  color: Colors.red[200],
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
@@ -75,12 +75,10 @@ class _BodyState extends State<Body> {
                 ),
               ),
               onDismissed: (direction) {
-                showDialog(
-                  context: context,
-                  builder: (context) => buildAlertDialog(context, safes[index]),
-                );
+                setState(() {
                   safeBloc.delete(safes[index].id);
                   safes.removeAt(index);
+                });
               },
               child: Card(
                 color: Colors.blueGrey[100],
