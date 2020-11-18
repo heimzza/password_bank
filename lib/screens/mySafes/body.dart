@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:password_safe/blocs/safe_bloc.dart';
 import 'package:password_safe/data/db_helper.dart';
@@ -13,6 +15,23 @@ class _BodyState extends State<Body> {
   List<Safe> safes = [];
   int safeCount = 0;
   final dbHelper = DbHelper();
+  var txtPassword = TextEditingController();
+  final List<String> errors = [];
+  final _formKey = GlobalKey<FormState>();
+
+  void addError({String error}) {
+    if (!errors.contains(error))
+      setState(() {
+        errors.add(error);
+      });
+  }
+
+  void removeError({String error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
+  }
 
   @override
   void initState() {
@@ -50,7 +69,10 @@ class _BodyState extends State<Body> {
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: GestureDetector(
             onTap: () {
-              goToScreen(context, Passwords(safes[index].id));
+              showDialog(
+                  context: context,
+                  builder: (context) =>
+                      buildAlertDialog(context, safes[index]));
             },
             child: Dismissible(
               key: Key(safes[index].id.toString()),
@@ -109,5 +131,68 @@ class _BodyState extends State<Body> {
         builder: (context) => screen,
       ),
     );
+  }
+
+  buildPasswordField() {
+    return TextField(
+      decoration: InputDecoration(
+        labelText: "Şifresi",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      controller: txtPassword,
+    );
+  }
+
+  AlertDialog buildAlertDialog(BuildContext context, Safe safe) {
+    return AlertDialog(
+      title: Text("Şifrenizi girin"),
+      content: SizedBox(
+        height: 150,
+        child: Column(
+          children: [
+            Icon(
+              Icons.lock,
+              color: Colors.red[200],
+            ),
+            buildPasswordField(),
+            showError(),
+          ],
+        ),
+      ),
+      actions: [
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("Geri"),
+        ),
+        FlatButton(
+          onPressed: () {
+            if (safe.password == txtPassword.text) {
+              setState(() {
+                removeError(error: 'Yanlış şifre!');
+              });
+              Navigator.of(context).pop();
+              goToScreen(context, Passwords(safe.id));
+            } else {
+              setState(() {
+                addError(error: 'Yanlış şifre!');
+              });
+            }
+          },
+          child: Text("Devam et"),
+        )
+      ],
+    );
+  }
+
+  Widget showError() {
+    if (errors.length > 0) {
+      return Text(errors[0].toString());
+    } else {
+      return SizedBox(height: 20);
+    }
   }
 }
