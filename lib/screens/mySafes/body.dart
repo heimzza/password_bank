@@ -15,23 +15,7 @@ class _BodyState extends State<Body> {
   List<Safe> safes = [];
   int safeCount = 0;
   final dbHelper = DbHelper();
-  var txtPassword = TextEditingController();
-  final List<String> errors = [];
   final _formKey = GlobalKey<FormState>();
-
-  void addError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   void initState() {
@@ -91,20 +75,27 @@ class _BodyState extends State<Body> {
                 ),
               ),
               onDismissed: (direction) {
-                setState(() {
+                showDialog(
+                  context: context,
+                  builder: (context) => buildAlertDialog(context, safes[index]),
+                );
                   safeBloc.delete(safes[index].id);
                   safes.removeAt(index);
-                });
               },
               child: Card(
+                color: Colors.blueGrey[100],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
                 child: ListTile(
+                  leading: Icon(Icons.account_balance),
                   title: Text(
                     "Kasa adı:  ${safes[index].name}",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  trailing: Icon(Icons.lock),
                 ),
               ),
             ),
@@ -133,20 +124,28 @@ class _BodyState extends State<Body> {
     );
   }
 
-  buildPasswordField() {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: "Şifresi",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      controller: txtPassword,
+  buildPasswordField(String password) {
+    return Form(
+      key: _formKey,
+      child: TextFormField(
+          decoration: InputDecoration(
+            icon: Icon(Icons.person),
+            labelText: "Şifresi",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          validator: (value) {
+            return value != password ? 'Yanlış şifre' : null;
+          }),
     );
   }
 
   AlertDialog buildAlertDialog(BuildContext context, Safe safe) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
       title: Text("Şifrenizi girin"),
       content: SizedBox(
         height: 150,
@@ -154,10 +153,10 @@ class _BodyState extends State<Body> {
           children: [
             Icon(
               Icons.lock,
-              color: Colors.red[200],
+              color: Colors.red[700],
             ),
-            buildPasswordField(),
-            showError(),
+            SizedBox(height: 30),
+            buildPasswordField(safe.password),
           ],
         ),
       ),
@@ -170,29 +169,14 @@ class _BodyState extends State<Body> {
         ),
         FlatButton(
           onPressed: () {
-            if (safe.password == txtPassword.text) {
-              setState(() {
-                removeError(error: 'Yanlış şifre!');
-              });
+            if (_formKey.currentState.validate()) {
               Navigator.of(context).pop();
               goToScreen(context, Passwords(safe.id));
-            } else {
-              setState(() {
-                addError(error: 'Yanlış şifre!');
-              });
             }
           },
           child: Text("Devam et"),
         )
       ],
     );
-  }
-
-  Widget showError() {
-    if (errors.length > 0) {
-      return Text(errors[0].toString());
-    } else {
-      return SizedBox(height: 20);
-    }
   }
 }
