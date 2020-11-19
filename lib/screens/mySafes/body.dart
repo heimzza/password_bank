@@ -74,18 +74,12 @@ class _BodyState extends State<Body> {
                   ],
                 ),
               ),
-              confirmDismiss: (direction) async{
+              confirmDismiss: (direction) async {
                 return await showDialog(
                     context: context,
                     builder: (context) =>
                         buildAlertDialog(context, true, index));
               },
-              // onDismissed: (direction) {
-              //   showDialog(
-              //       context: context,
-              //       builder: (context) =>
-              //           buildAlertDialog(context, true, index));
-              // },
               child: Card(
                 color: Colors.blueGrey[100],
                 shape: RoundedRectangleBorder(
@@ -132,16 +126,21 @@ class _BodyState extends State<Body> {
     return Form(
       key: _formKey,
       child: TextFormField(
-          decoration: InputDecoration(
-            icon: Icon(Icons.person),
-            labelText: "Şifresi",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
+        decoration: InputDecoration(
+          icon: Icon(Icons.account_balance),
+          labelText: "Şifresi",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          validator: (value) {
-            return value != password ? 'Yanlış şifre' : null;
-          }),
+        ),
+        validator: (value) {
+          return value.length < 1
+              ? 'Şifrenizi girin'
+              : value != password
+                  ? 'Yanlış şifre'
+                  : null;
+        },
+      ),
     );
   }
 
@@ -176,11 +175,13 @@ class _BodyState extends State<Body> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               if (isOnDelete) {
-                setState(() {
-                  safeBloc.delete(safes[index].id);
-                  safes.removeAt(index);
-                  Navigator.of(context).pop(true);
-                });
+                setState(
+                  () {
+                    safeBloc.delete(safes[index].id);
+                    safes.removeAt(index);
+                    Navigator.of(context).pop(true);
+                  },
+                );
               } else {
                 Navigator.of(context).pop();
                 goToScreen(context, Passwords(safes[index].id));

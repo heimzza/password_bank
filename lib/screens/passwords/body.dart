@@ -67,15 +67,18 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            onDismissed: (direction) {
-              setState(() {
-                safeCardBloc.delete(safeCards[index].id, safeCards[index].safeId);
-                safeCards.removeAt(index);
-              });
+            confirmDismiss: (direction) async {
+              return await showDialog(
+                  context: context,
+                  builder: (context) => buildAlertDialog(context, index));
             },
             child: Card(
+              color: Colors.blueGrey[100],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
               child: ListTile(
+                leading: Icon(Icons.person_outline),
                 title: Text(
                   "Yeri:  ${cards[index].name}",
                   style: TextStyle(
@@ -104,5 +107,44 @@ class _BodyState extends State<Body> {
         cardCount = data.length;
       });
     });
+  }
+
+  AlertDialog buildAlertDialog(BuildContext context, int index) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
+      title: Text("Kayıt silinecek, emin misiniz?"),
+      content: SizedBox(
+        height: 50,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.delete_forever,
+              color: Colors.red[700],
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("Geri"),
+        ),
+        FlatButton(
+          onPressed: () {
+            setState(() {
+              safeCardBloc.delete(safeCards[index].id, safeCards[index].safeId);
+              safeCards.removeAt(index);
+            });
+            Navigator.of(context).pop();
+          },
+          child: Text("Evet"),
+        )
+      ],
+    );
   }
 }

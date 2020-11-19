@@ -12,6 +12,9 @@ class _BodyState extends State<Body> {
   var dbHelper = DbHelper();
   var txtName = TextEditingController();
   var txtPassword = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,9 +23,7 @@ class _BodyState extends State<Body> {
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Column(
           children: [
-            buildNameField(),
-            SizedBox(height: 20),
-            buildPasswordField(),
+            buildFormField(),
             SizedBox(height: 20),
             buildSaveButton(),
           ],
@@ -31,28 +32,48 @@ class _BodyState extends State<Body> {
     );
   }
 
-  buildNameField() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: "Ör. Banka şifrelerim",
-        labelText: "Kasa adı",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+  buildFormField() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.account_balance),
+              labelText: "Kasa adı",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            controller: txtName,
+            validator: (value) {
+              return value.length < 4
+                  ? 'En az 4 karakter girin'
+                  : value.length > 30
+                      ? 'En fazla 30 karakter girebilirsiniz'
+                      : null;
+            },
+          ),
+          SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.lock),
+              labelText: "Şifresi",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            controller: txtPassword,
+            validator: (value) {
+              return value.length < 4
+                  ? 'En az 4 karakter girin'
+                  : value.length > 30
+                      ? 'En fazla 30 karakter girebilirsiniz'
+                      : null;
+            },
+          ),
+        ],
       ),
-      controller: txtName,
-    );
-  }
-
-  buildPasswordField() {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: "Şifresi",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      controller: txtPassword,
     );
   }
 
@@ -64,14 +85,15 @@ class _BodyState extends State<Body> {
       ),
       child: Text("Ekle"),
       onPressed: () {
-        addSafe();
+        if (_formKey.currentState.validate()) {
+          addSafe();
+        }
       },
     );
   }
 
   void addSafe() async {
-    safeBloc
-        .addSafe(Safe(name: txtName.text, password: txtPassword.text));
+    safeBloc.addSafe(Safe(name: txtName.text, password: txtPassword.text));
     Navigator.pop(context);
   }
 }

@@ -12,9 +12,16 @@ class Passwords extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[500],
         title: Text("Şifrelerim"),
         actions: [
-          buildIconButtonToScreen(context, AddCardScreen(safeId), Icon(Icons.add)),
+          buildIconButtonToScreen(
+              context,
+              AddCardScreen(safeId),
+              Icon(
+                Icons.add,
+                color: Colors.white60,
+              )),
           buildIconButtonDelete(
             Icon(
               Icons.delete_sweep,
@@ -52,23 +59,34 @@ class Passwords extends StatelessWidget {
 
   AlertDialog buildAlertDialog(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
       title: Text("Tüm kayıtlar silincek!!!\n Emin misiniz?"),
-      content: Icon(
-        Icons.no_sim,
-        color: Colors.red[200],
+      content: SizedBox(
+        height: 50,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.no_sim,
+              color: Colors.red[700],
+            ),
+          ],
+        ),
       ),
       actions: [
         FlatButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text("Hayır"),
+          child: Text("Geri"),
         ),
         FlatButton(
           onPressed: () =>
               {safeCardBloc.deleteAll(safeId), Navigator.of(context).pop()},
           child: Text("Evet"),
-        ),
+        )
       ],
     );
   }

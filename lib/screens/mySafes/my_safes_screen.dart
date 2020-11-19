@@ -7,15 +7,23 @@ class MySafes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[500],
         title: Text('Kasalarım'),
         actions: [
-          buildIconButtonToScreen(context, AddSafeScreen(), Icon(Icons.add)),
-          
+          buildIconButtonToScreen(
+            context,
+            AddSafeScreen(),
+            Icon(
+              Icons.add,
+              color: Colors.white60,
+            ),
+          ),
         ],
       ),
       body: Body(),
     );
   }
+
   IconButton buildIconButtonToScreen(
       BuildContext context, Widget screen, Icon icon) {
     return IconButton(

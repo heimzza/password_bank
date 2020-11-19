@@ -10,6 +10,7 @@ class AddCardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[500],
         title: Text("Şifre ekle"),
       ),
       body: Body(safeId),
