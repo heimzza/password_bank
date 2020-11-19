@@ -56,7 +56,7 @@ class _BodyState extends State<Body> {
               showDialog(
                   context: context,
                   builder: (context) =>
-                      buildAlertDialog(context, safes[index]));
+                      buildAlertDialog(context, false, index));
             },
             child: Dismissible(
               key: Key(safes[index].id.toString()),
@@ -74,12 +74,18 @@ class _BodyState extends State<Body> {
                   ],
                 ),
               ),
-              onDismissed: (direction) {
-                setState(() {
-                  safeBloc.delete(safes[index].id);
-                  safes.removeAt(index);
-                });
+              confirmDismiss: (direction) async{
+                return await showDialog(
+                    context: context,
+                    builder: (context) =>
+                        buildAlertDialog(context, true, index));
               },
+              // onDismissed: (direction) {
+              //   showDialog(
+              //       context: context,
+              //       builder: (context) =>
+              //           buildAlertDialog(context, true, index));
+              // },
               child: Card(
                 color: Colors.blueGrey[100],
                 shape: RoundedRectangleBorder(
@@ -139,7 +145,8 @@ class _BodyState extends State<Body> {
     );
   }
 
-  AlertDialog buildAlertDialog(BuildContext context, Safe safe) {
+  AlertDialog buildAlertDialog(
+      BuildContext context, bool isOnDelete, int index) {
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
@@ -154,7 +161,7 @@ class _BodyState extends State<Body> {
               color: Colors.red[700],
             ),
             SizedBox(height: 30),
-            buildPasswordField(safe.password),
+            buildPasswordField(safes[index].password),
           ],
         ),
       ),
@@ -168,8 +175,16 @@ class _BodyState extends State<Body> {
         FlatButton(
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              Navigator.of(context).pop();
-              goToScreen(context, Passwords(safe.id));
+              if (isOnDelete) {
+                setState(() {
+                  safeBloc.delete(safes[index].id);
+                  safes.removeAt(index);
+                  Navigator.of(context).pop(true);
+                });
+              } else {
+                Navigator.of(context).pop();
+                goToScreen(context, Passwords(safes[index].id));
+              }
             }
           },
           child: Text("Devam et"),
