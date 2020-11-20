@@ -126,6 +126,7 @@ class _BodyState extends State<Body> {
     return Form(
       key: _formKey,
       child: TextFormField(
+        obscureText: true,
         decoration: InputDecoration(
           icon: Icon(Icons.account_balance),
           labelText: "Şifresi",
