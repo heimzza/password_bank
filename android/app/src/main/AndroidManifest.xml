@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="password_safe"
+        android:label="Şifre Kasalarım - Yöneticim"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -151,7 +151,7 @@ class _BodyState extends State<Body> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
       ),
-      title: Text("Şifrenizi girin"),
+      title: isOnDelete ? Text("Kasayı silmek için şifrenizi girin") : Text("Kasayı açmak için şifrenizi girin"),
       content: SizedBox(
         height: 150,
         child: Column(
