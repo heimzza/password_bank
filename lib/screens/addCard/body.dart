@@ -16,6 +16,8 @@ class _BodyState extends State<Body> {
   var dbHelper = DbHelper();
   var txtName = TextEditingController();
   var txtPassword = TextEditingController();
+  var txtEmail = TextEditingController();
+  var txtDescription = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -75,6 +77,38 @@ class _BodyState extends State<Body> {
                       : null;
             },
           ),
+          SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.lock),
+              labelText: "E-posta",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            controller: txtEmail,
+            validator: (value) {
+              return value.length > 30
+                  ? 'En fazla 30 karakter girebilirsiniz'
+                  : null;
+            },
+          ),
+          SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.lock),
+              labelText: "Açıklama",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            controller: txtDescription,
+            validator: (value) {
+              return value.length > 30
+                  ? 'En fazla 30 karakter girebilirsiniz'
+                  : null;
+            },
+          ),
         ],
       ),
     );
@@ -97,7 +131,11 @@ class _BodyState extends State<Body> {
 
   void addCard(int safeId) async {
     safeCardBloc.addToSafe(SafeCard(
-        name: txtName.text, password: txtPassword.text, safeId: safeId));
+        name: txtName.text,
+        password: txtPassword.text,
+        description: txtDescription.text,
+        email: txtEmail.text,
+        safeId: safeId));
     Navigator.pop(context);
   }
 }

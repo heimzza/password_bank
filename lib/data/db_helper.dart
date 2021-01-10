@@ -31,7 +31,7 @@ class DbHelper {
 
   void createDb(Database db, int version) async {
     await db.execute(
-        "Create table safeCards(id integer primary key autoincrement, name text, description text, password text, safeId integer)");
+        "Create table safeCards(id integer primary key autoincrement, name text, description text, email text, password text, safeId integer)");
     await db.execute('Create table safes(id integer primary key autoincrement, name text, password text)');
   }
 

@@ -80,15 +80,17 @@ class _BodyState extends State<Body> {
               child: ListTile(
                 leading: Icon(Icons.person_outline),
                 title: Text(
-                  "Yeri:  ${cards[index].name}",
+                  "Yeri:  ${cards[index].name}\n" + "Şifresi:  ${cards[index].password}",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
+                    height: 1.5,
                   ),
                 ),
                 subtitle: Text(
-                  "Şifresi:  ${cards[index].password}",
+                  "E-posta:  ${cards[index].email}\n" + "Açıklama:  ${cards[index].description}",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
+                     height: 1.5,
                   ),
                 ),
               ),
