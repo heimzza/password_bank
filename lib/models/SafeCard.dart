@@ -2,6 +2,7 @@ class SafeCard {
   int id;
   String name;
   String description;
+  String email;
   String password;
   int safeId;
 
