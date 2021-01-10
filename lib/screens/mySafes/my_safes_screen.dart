@@ -73,7 +73,7 @@ class MySafes extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                 children: [
                   TextSpan(
-                      text: ' Güvenlik sorunları nedeniyle kasanıza bir kez şifre koyduktan sonra tekrar değiştiremezsiniz' +
+                      text: ' Kasanıza bir kez şifre koyduktan sonra tekrar değiştiremezsiniz' +
                        ' ve kasayı şifre olmadan silemezsiniz.',
                       style: TextStyle(color: Colors.black)),
                 ],
