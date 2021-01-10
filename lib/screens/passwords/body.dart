@@ -78,7 +78,7 @@ class _BodyState extends State<Body> {
                   borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
               child: ListTile(
-                leading: Icon(Icons.person_outline),
+                leading: Icon(Icons.vpn_key),
                 title: Text(
                   "Yeri:  ${cards[index].name}\n" + "Şifresi:  ${cards[index].password}",
                   style: TextStyle(
